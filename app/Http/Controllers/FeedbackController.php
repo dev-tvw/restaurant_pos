@@ -17,7 +17,7 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $feedbacks = Feedback::all();
+        $feedbacks = Feedback::query()->latest()->get();
         return view('feedbacks.index', compact('feedbacks'));
     }
 
