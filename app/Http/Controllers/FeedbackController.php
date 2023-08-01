@@ -15,10 +15,37 @@ class FeedbackController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $feedbacks = Feedback::query()->latest()->get();
-        return view('feedbacks.index', compact('feedbacks'));
+        $questions = Question::query()->get();
+        $feedbacks = Feedback::query();
+
+        if($request->question_id != '' && $request->rating != '') {
+
+            $rolation = FeedbackRating::query()
+                                        ->where('question_id', $request->question_id)
+                                        ->where('rating', $request->rating)
+                                        ->pluck('feedback_id');
+
+            $feedbacks = $feedbacks->whereIn('id', $rolation)->latest()->get();
+        } elseif($request->question_id != '' && $request->rating == '') {
+
+            $rolation = FeedbackRating::query()
+            ->where('question_id', $request->question_id)
+            ->pluck('feedback_id');
+
+            $feedbacks = $feedbacks->whereIn('id', $rolation)->latest()->get();
+        } elseif($request->question_id == '' && $request->rating != '') {
+            //
+            $rolation = FeedbackRating::query()
+            ->where('rating', $request->rating)
+            ->pluck('feedback_id');
+
+            $feedbacks = $feedbacks->whereIn('id', $rolation)->latest()->get();
+        } else {
+            $feedbacks = $feedbacks->latest()->get();
+        }
+        return view('feedbacks.index', compact('feedbacks', 'questions'));
     }
 
     /**

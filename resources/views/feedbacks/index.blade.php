@@ -26,6 +26,31 @@
                     </div>
                 </div>
                 <div class="card-body">
+
+                        <form action="{{ route('feedbacks.index') }}" method="GET">
+                        <div class="row mb-3">
+                            <div class="col">
+                                    <select name="question_id" class="form-control">
+                                        <option value="">Select Question</option>
+                                        @foreach ($questions as $question)
+                                            <option  value="{{$question->id}}">{{ $question->question }}</option>
+                                        @endforeach
+                                    </select>
+                            </div>
+                            <div class="col">
+                                    <select name="rating" class="form-control" >
+                                        <option value="">Select Rating</option>
+                                        @for ($i = 0; $i <= 5; $i++)
+                                            <option value="{{$i}}">Rating : {{$i}}</option>
+                                        @endfor
+                                    </select>
+                            </div>
+                            <div class="col">
+                                    <button type="submit" class="btn btn-primary">filter</button>
+                            </div>
+                        </div>
+
+                        </form>
                     <div class="table-responsive">
                         <table id="datatable" class="table table-striped" data-toggle="data-table">
                             <thead>
