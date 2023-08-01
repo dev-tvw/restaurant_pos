@@ -97,4 +97,17 @@ class QuestionController extends Controller
     {
         //
     }
+
+
+    public function change_status($id)
+    {
+        // get question
+        $question = Question::findOrFail($id);
+        // make save
+        $question->status = $question->status == 1 ? 0 : 1;
+        $question->save();
+        // return back
+        return redirect()->back()->with('success', 'Status is changed successfully');
+
+    }
 }

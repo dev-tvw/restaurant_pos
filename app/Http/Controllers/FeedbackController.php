@@ -90,7 +90,7 @@ class FeedbackController extends Controller
 
     public function getQuestions(Request $request)
     {
-        $questions = Question::all();
+        $questions = Question::query()->where('status', 1)->get();
         return response()->json([
             'success' => true,
             'questions' => $questions
